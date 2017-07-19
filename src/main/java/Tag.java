@@ -73,4 +73,14 @@ public List<Recipe> getRecipes() {
   }
 }
 
+public void leaveRecipe(Recipe recipe){
+  try(Connection con = DB.sql2o.open()){
+    String joinRemovalQuery = "DELETE FROM recipes_tags WHERE recipe_id = :recipeId AND tag_id = :tagId;";
+    con.createQuery(joinRemovalQuery)
+      .addParameter("recipeId", recipe.getId())
+      .addParameter("tagId", this.getId())
+      .executeUpdate();
+  }
+}
+
 }

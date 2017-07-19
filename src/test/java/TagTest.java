@@ -65,4 +65,15 @@ public class TagTest {
     assertEquals(1, savedRecipes.size());
   }
 
+  @Test
+  public void leaveRecipe_removesAssociationWithSpecifiedRecipe() {
+    Recipe testRecipe = new Recipe("Fried Chicken", "Raw chicken, batter, eggs, flour", "Soak chicken in batter, deep fry for 10 minutes", 5);
+    testRecipe.save();
+    Tag testTag = new Tag("Poultry");
+    testTag.save();
+    testTag.leaveRecipe(testRecipe);
+    List savedRecipes = testTag.getRecipes();
+    assertEquals(0, savedRecipes.size());
+  }
+
 }

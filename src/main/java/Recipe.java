@@ -78,6 +78,20 @@ public class Recipe {
   }
 }
 
+  public static List<Recipe> sortByRating(){
+      String sql = "SELECT * FROM recipes ORDER BY rating DESC;";
+      try(Connection con = DB.sql2o.open()){
+        return con.createQuery(sql).executeAndFetch(Recipe.class);
+    }
+  }
+
+  public static List<Recipe> searchForIngredient(String searchTerm){
+    String sql = "SELECT * FROM recipes WHERE ingredients LIKE '%searchTerm%';";
+    try(Connection con = DB.sql2o.open()){
+      return con.createQuery(sql).executeAndFetch(Recipe.class);
+    }
+  }
+
   public void addTag(Tag tag) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "INSERT INTO recipes_tags (recipe_id, tag_id) VALUES (:recipe_id, :tag_id)";
@@ -106,6 +120,7 @@ public class Recipe {
   }
 }
 
+
 public void delete() {
   try(Connection con = DB.sql2o.open()) {
   String sql = "DELETE FROM recipes WHERE id = :id;";
@@ -118,6 +133,16 @@ public void delete() {
     .executeUpdate();
   }
 }
+
+  public void removeTag(Tag tag){
+    try(Connection con = DB.sql2o.open()){
+      String joinRemovalQuery = "DELETE FROM recipes_tags WHERE recipe_id = :recipeId AND tag_id = :tagId;";
+      con.createQuery(joinRemovalQuery)
+        .addParameter("recipeId", this.getId())
+        .addParameter("tagId", tag.getId())
+        .executeUpdate();
+    }
+  }
 
 
 }

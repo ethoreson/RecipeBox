@@ -39,6 +39,30 @@ public class RecipeTest {
   }
 
   @Test
+  public void sortByRating_returnsRecipesOrderedByRating() {
+    Recipe firstRecipe = new Recipe("Fried Chicken", "Raw chicken, batter, eggs, flour", "Soak chicken in batter, deep fry for 10 minutes", 3);
+    firstRecipe.save();
+    Recipe secondRecipe = new Recipe("Eggs Benedict", "two eggs, english muffin, hollandaise sauce", "poach eggs, toast bread, add sauce", 5);
+    secondRecipe.save();
+    Recipe thirdRecipe = new Recipe("Cookies", "eggs, cookie mix, butter", "roll dough into balls, bake", 4);
+    thirdRecipe.save();
+    List<Recipe> newOrder = Recipe.sortByRating();
+    assertEquals(newOrder.get(0).getName(), "Eggs Benedict");
+  }
+
+  @Test
+  public void searchForIngredient_returnsRecipesContainingIngredient() {
+    Recipe firstRecipe = new Recipe("Fried Chicken", "Raw chicken, batter, flour", "Soak chicken in batter, deep fry for 10 minutes", 3);
+    firstRecipe.save();
+    Recipe secondRecipe = new Recipe("Eggs Benedict", "two eggs, english muffin, hollandaise sauce", "poach eggs, toast bread, add sauce", 5);
+    secondRecipe.save();
+    Recipe thirdRecipe = new Recipe("Cookies", "eggs, cookie mix, butter", "roll dough into balls, bake", 4);
+    thirdRecipe.save();
+    List<Recipe> containsSearchTerm = Recipe.searchForIngredient("eggs");
+    assertEquals(containsSearchTerm.size(), 2);
+  }
+
+  @Test
   public void save_assignsIdToObject() {
     Recipe testRecipe = new Recipe("Fried Chicken", "Raw chicken, batter, eggs, flour", "Soak chicken in batter, deep fry for 10 minutes", 5);
     testRecipe.save();
@@ -54,6 +78,8 @@ public class RecipeTest {
     secondRecipe.save();
     assertEquals(Recipe.find(secondRecipe.getId()), secondRecipe);
   }
+
+
 
   @Test
   public void addTag_addsTagToRecipe() {
@@ -94,5 +120,16 @@ public class RecipeTest {
     testRecipe.addTag(testTag);
     testRecipe.delete();
     assertEquals(0, testTag.getRecipes().size());
+  }
+
+  @Test
+  public void removeTag_removesAssociationWithSpecifiedRecipe() {
+    Recipe testRecipe = new Recipe("Fried Chicken", "Raw chicken, batter, eggs, flour", "Soak chicken in batter, deep fry for 10 minutes", 5);
+    testRecipe.save();
+    Tag testTag = new Tag("Poultry");
+    testTag.save();
+    testRecipe.removeTag(testTag);
+    List savedTags = testRecipe.getTags();
+    assertEquals(0, savedTags.size());
   }
 }
