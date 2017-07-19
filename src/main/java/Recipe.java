@@ -86,9 +86,10 @@ public class Recipe {
   }
 
   public static List<Recipe> searchForIngredient(String searchTerm){
-    String sql = "SELECT * FROM recipes WHERE ingredients LIKE '%searchTerm%';";
+    String sql = "SELECT * FROM recipes WHERE ingredients LIKE '%" + searchTerm + "%';";
     try(Connection con = DB.sql2o.open()){
-      return con.createQuery(sql).executeAndFetch(Recipe.class);
+      return con.createQuery(sql)
+        .executeAndFetch(Recipe.class);
     }
   }
 
