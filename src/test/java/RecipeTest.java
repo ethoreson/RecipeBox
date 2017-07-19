@@ -62,7 +62,7 @@ public class RecipeTest {
     Tag testTag = new Tag("Poultry");
     testTag.save();
     testRecipe.addTag(testTag);
-    Tag savedTag = testecipe.getTags().get(0);
+    Tag savedTag = testRecipe.getTags().get(0);
     assertTrue(testTag.equals(savedTag));
   }
 

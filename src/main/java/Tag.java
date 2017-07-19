@@ -61,9 +61,7 @@ public List<Recipe> getRecipes() {
     List<Integer> recipeIds = con.createQuery(joinQuery)
       .addParameter("tag_id", this.getId())
       .executeAndFetch(Integer.class);
-
     List<Recipe> recipes = new ArrayList<Recipe>();
-
     for (Integer recipeId : recipeIds) {
       String recipeQuery = "SELECT * FROM recipes WHERE id = :recipeId";
       Recipe recipe = con.createQuery(recipeQuery)
