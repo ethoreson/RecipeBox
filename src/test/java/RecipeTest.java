@@ -77,4 +77,22 @@ public class RecipeTest {
     assertEquals(savedTags.size(), 1);
   }
 
+  @Test
+  public void delete_deletesRecipe_true() {
+    Recipe testRecipe = new Recipe("Fried Chicken", "Raw chicken, batter, eggs, flour", "Soak chicken in batter, deep fry for 10 minutes", 5);
+    testRecipe.save();
+    testRecipe.delete();
+    assertEquals(0, Recipe.all().size());
+  }
+
+  @Test
+  public void delete_deletesAllTagsAndRecipesAssociations() {
+    Recipe testRecipe = new Recipe("Fried Chicken", "Raw chicken, batter, eggs, flour", "Soak chicken in batter, deep fry for 10 minutes", 5);
+    testRecipe.save();
+    Tag testTag = new Tag("Poultry");
+    testTag.save();
+    testRecipe.addTag(testTag);
+    testRecipe.delete();
+    assertEquals(0, testTag.getRecipes().size());
+  }
 }
