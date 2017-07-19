@@ -76,4 +76,12 @@ public class TagTest {
     assertEquals(0, savedRecipes.size());
   }
 
+  @Test
+  public void update_updatesTag() {
+    Tag testTag = new Tag("Poultry");
+    testTag.save();
+    testTag.update("Good for camping");
+    assertEquals("Good for camping", Tag.find(testTag.getId()).getName());
+  }
+
 }
